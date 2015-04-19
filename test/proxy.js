@@ -41,8 +41,6 @@ server.on("connection", function(socket) {
                 
                 console.log("param: " + client_param);
                 console.log("dataSize: " + client_dataSize);
-                console.log("-- pos: " + reader.pos);
-                console.log("-- length: " + reader.buf.length);
                 
                 if (server_param === 2012 && client_param == 1) {
                     console.log("ver: " + types.UShort.read(reader));
