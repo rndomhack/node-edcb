@@ -1,4 +1,3 @@
-/*jshint node:true, esnext:true*/
 var net = require("net");
 var types = require("../lib/types");
 
