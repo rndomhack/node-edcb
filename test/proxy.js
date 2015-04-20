@@ -15,13 +15,17 @@ server.on("connection", function(socket) {
         console.log("-- server data:");
         console.log(data);
         
-        var reader = new types.Reader(data);
-        
-        var server_param = types.ULong.read(reader);
-        var server_dataSize = types.ULong.read(reader);
-        
-        console.log("param: " + server_param);
-        console.log("dataSize: " + server_dataSize);
+        try {
+            var reader = new types.Reader(data);
+            
+            var server_param = types.ULong.read(reader);
+            var server_dataSize = types.ULong.read(reader);
+            
+            console.log("param: " + server_param);
+            console.log("dataSize: " + server_dataSize);
+        } catch(e) {
+            console.log(e);
+        }
         
         var client = net.connect("\\\\.\\pipe\\EpgTimerSrvPipe");
         
@@ -33,18 +37,25 @@ server.on("connection", function(socket) {
                 console.log("--- client data:");
                 console.log(data);
                 
-                var reader = new types.Reader(data);
-                
-                var client_param = types.ULong.read(reader);
-                var client_dataSize = types.ULong.read(reader);
-                
-                console.log("param: " + client_param);
-                console.log("dataSize: " + client_dataSize);
-                
-                if (server_param === 2012 && client_param == 1) {
-                    console.log("ver: " + types.UShort.read(reader));
-                    console.log("valSize: " + types.ULong.read(reader));
-                    console.log("title: " + types.wstring.read(reader));
+                try {
+                    var reader = new types.Reader(data);
+                    
+                    var client_param = types.ULong.read(reader);
+                    var client_dataSize = types.ULong.read(reader);
+                    
+                    console.log("param: " + client_param);
+                    console.log("dataSize: " + client_dataSize);
+                    
+                    if (server_param === 2012 && client_param == 1) {
+                        var client_ver = types.UShort.read(reader);
+                        
+                        console.log("ver: " + client_ver);
+                        var obj = types.ReserveData.read(reader, client_ver);
+                        
+                        console.log(obj);
+                    }
+                } catch(e) {
+                    console.log(e);
                 }
                 
                 socket.write(data);
