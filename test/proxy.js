@@ -45,11 +45,11 @@ server.on("connection", function(socket) {
                     console.log("dataSize: " + client_dataSize);
                     
                     if (client_param === 1) {
-                        if (server_param >= 1021) {
+                        var obj = {};
+                        if (server_param >= 2011) {
                             var client_ver = types.UShort.read(reader);
                             console.log("ver: " + client_ver);
                             
-                            var obj = {};
                             switch (server_param) {
                                 case 2011:
                                     obj = types.Vector.read(types.ReserveData, reader, client_ver);
@@ -66,21 +66,24 @@ server.on("connection", function(socket) {
                                 case 2141:
                                     obj = types.Vector.read(types.ManualAutoAddData, reader, client_ver);
                                     break;
+                            }
+                        } else {
+                            switch (server_param) {
                                 case 1021:
-                                    obj = types.Vector.read(types.EpgServiceInfo, reader, client_ver);
+                                    obj = types.Vector.read(types.EpgServiceInfo, reader, -1);
                                     break;
                                 case 1022:
-                                    obj = types.Vector.read(types.EpgEventInfo, reader, client_ver);
+                                    obj = types.Vector.read(types.EpgEventInfo, reader, -1);
                                     break;
                                 case 1023:
-                                    obj = types.EpgEventInfo.read(reader, client_ver);
+                                    obj = types.EpgEventInfo.read(reader, -1);
                                     break;
                                 case 1026:
-                                    obj = types.Vector.read(types.EpgServiceEventInfo, reader, client_ver);
+                                    obj = types.Vector.read(types.EpgServiceEventInfo, reader, -1);
                                     break;
                             }
-                            console.log(JSON.stringify(obj, null, "  "));
                         }
+                        console.log(JSON.stringify(obj, null, "  "));
                     }
                 } catch(e) {
                     console.log(e.stack);
