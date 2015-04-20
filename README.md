@@ -1,7 +1,5 @@
 # node-edcb
-Use EDCB from node.js (test)
+Using EpgDataCap_Bon from node.js
 
-## 方針
-- CtrlCmdCLIのラッパーをつくりたかった
-- node-ffiやedgeでやろうと思ったけど問題が多かった
-- named pipeから直接受け取ることになりそう
+## What's this?
+EpgTimerSrvから名前付きパイプ経由で情報を受け渡しするnodeモジュール(予定)

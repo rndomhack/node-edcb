@@ -20,7 +20,6 @@ server.on("connection", function(socket) {
             
             var server_param = types.ULong.read(reader);
             var server_dataSize = types.ULong.read(reader);
-            
             console.log("param: " + server_param);
             console.log("dataSize: " + server_dataSize);
         } catch(e) {
@@ -42,20 +41,49 @@ server.on("connection", function(socket) {
                     
                     var client_param = types.ULong.read(reader);
                     var client_dataSize = types.ULong.read(reader);
-                    
                     console.log("param: " + client_param);
                     console.log("dataSize: " + client_dataSize);
                     
-                    if (server_param === 2012 && client_param == 1) {
-                        var client_ver = types.UShort.read(reader);
-                        
-                        console.log("ver: " + client_ver);
-                        var obj = types.ReserveData.read(reader, client_ver);
-                        
-                        console.log(obj);
+                    if (client_param === 1) {
+                        if (server_param >= 1021) {
+                            var client_ver = types.UShort.read(reader);
+                            console.log("ver: " + client_ver);
+                            
+                            var obj = {};
+                            switch (server_param) {
+                                case 2011:
+                                    obj = types.Vector.read(types.ReserveData, reader, client_ver);
+                                    break;
+                                case 2012:
+                                    obj = types.ReserveData.read(reader, client_ver);
+                                    break;
+                                case 2017:
+                                    obj = types.Vector.read(types.RecFileInfo, reader, client_ver);
+                                    break;
+                                case 2131:
+                                    obj = types.Vector.read(types.EpgAutoAddData, reader, client_ver);
+                                    break;
+                                case 2141:
+                                    obj = types.Vector.read(types.ManualAutoAddData, reader, client_ver);
+                                    break;
+                                case 1021:
+                                    obj = types.Vector.read(types.EpgServiceInfo, reader, client_ver);
+                                    break;
+                                case 1022:
+                                    obj = types.Vector.read(types.EpgEventInfo, reader, client_ver);
+                                    break;
+                                case 1023:
+                                    obj = types.EpgEventInfo.read(reader, client_ver);
+                                    break;
+                                case 1026:
+                                    obj = types.Vector.read(types.EpgServiceEventInfo, reader, client_ver);
+                                    break;
+                            }
+                            console.log(JSON.stringify(obj, null, "  "));
+                        }
                     }
                 } catch(e) {
-                    console.log(e);
+                    console.log(e.stack);
                 }
                 
                 socket.write(data);
