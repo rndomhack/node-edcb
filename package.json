@@ -15,7 +15,8 @@
   ],
   "author": "rndomhack",
   "dependencies": {
-      "node-int64": ">=0.4.0"
+      "node-int64": ">=0.4.0",
+      "ini": ">=1.3.3"
   },
   "license": "MIT",
   "bugs": {
