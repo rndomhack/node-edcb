@@ -3,7 +3,7 @@ var CtrlCmdUtil = require("../lib/util");
 var ctrlCmdUtil = new CtrlCmdUtil({
     useTCP: true,
     host: "127.0.0.1",
-    port: 4510,
+    port: 4510
     /*ver: -1*/
 });
 
