@@ -1,4 +1,4 @@
-var CtrlCmdUtil = require("../lib/util");
+const CtrlCmdUtil = require("../lib/util");
 
 var ctrlCmdUtil = new CtrlCmdUtil({
     useTCP: true,
@@ -7,11 +7,29 @@ var ctrlCmdUtil = new CtrlCmdUtil({
     /*ver: -1*/
 });
 
-ctrlCmdUtil.sendEnumRecInfo().then((data) => {
+var service = {
+    ONID: 32742,
+    TSID: 32742,
+    SID: 1072
+};
+
+var serviceID = new Buffer(8).fill(0);
+
+serviceID.writeUInt16BE(service.ONID, 2);
+serviceID.writeUInt16BE(service.TSID, 4);
+serviceID.writeUInt16BE(service.SID, 6);
+
+ctrlCmdUtil.sendEnumPgInfo(serviceID).then(data => {
+    console.log(JSON.stringify(data, null, "  "));
+}).catch(err => {
+    console.log(err.stack);
+});
+
+/*ctrlCmdUtil.sendEnumRecInfo().then((data) => {
     console.log(JSON.stringify(data, null, "  "));
 }).catch((err) => {
     console.log(err.stack);
-});
+});*/
 
 /*
 ctrlCmdUtil.sendEnumTunerReserve().then((data) => {
