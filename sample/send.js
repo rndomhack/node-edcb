@@ -1,12 +1,16 @@
-const CtrlCmdUtil = require("../lib/util");
+"use strict";
+
+const util = require("util");
+const CtrlCmdUtil = require("../index.js").CtrlCmdUtil;
 
 var ctrlCmdUtil = new CtrlCmdUtil({
-    useTCP: true,
+    mode: true,
     host: "127.0.0.1",
     port: 4510
     /*ver: -1*/
 });
 
+/*
 var service = {
     ONID: 32742,
     TSID: 32742,
@@ -18,12 +22,128 @@ var serviceID = new Buffer(8).fill(0);
 serviceID.writeUInt16BE(service.ONID, 2);
 serviceID.writeUInt16BE(service.TSID, 4);
 serviceID.writeUInt16BE(service.SID, 6);
+*/
 
-ctrlCmdUtil.sendEnumPgInfo(serviceID).then(data => {
+ctrlCmdUtil.sendEnumReserve().then(data => {
+    console.log(util.inspect(data, {depth: null}));
+}).catch(err => {
+    console.log(err.stack);
+});
+
+
+/*ctrlCmdUtil.sendAddEpgAutoAdd([
+    { dataID: 47,
+    searchInfo:
+     { andKey: "テスト",
+       notKey: "",
+       regExpFlag: false,
+       titleOnlyFlag: false,
+       contentList:
+        [ { content_nibble_level_1: 7,
+            content_nibble_level_2: 255,
+            user_nibble_1: 0,
+            user_nibble_2: 0 } ],
+       dateList: [],
+       serviceList:
+        [ new Buffer([0x00, 0x00, 0x7f, 0xe1, 0x7f, 0xe1, 0x04, 0x08]) ],
+       videoList: [],
+       audioList: [],
+       aimaiFlag: 0,
+       notContetFlag: 0,
+       notDateFlag: 0,
+       freeCAFlag: 0,
+       chkRecEnd: 0,
+       chkRecDay: 6 },
+    recSetting:
+     { recMode: 1,
+       priority: 2,
+       tuijyuuFlag: 1,
+       serviceMode: 0,
+       pittariFlag: 0,
+       batFilePath: "",
+       recFolderList: [],
+       suspendMode: 0,
+       rebootFlag: 0,
+       useMargineFlag: 0,
+       startMargine: 10,
+       endMargine: 5,
+       continueRecFlag: 0,
+       partialRecFlag: 0,
+       tunerID: 0,
+       partialRecFolder: [] },
+    addCount: 2 }]).then(data => {
+    console.log(util.inspect(data, {depth: null}));
+}).catch(err => {
+    console.log(err.stack);
+});*/
+
+
+/*
+var serviceID = new Buffer(8).fill(0);
+
+serviceID.writeUInt16BE(service.ONID, 2);
+serviceID.writeUInt16BE(service.TSID, 4);
+serviceID.writeUInt16BE(service.SID, 6);
+
+var searchKey = {
+    andKey: "蒼の彼方のフォーリズム",
+    notKey: "あにむす！",
+    regExpFlag: false,
+    titleOnlyFlag: false,
+    contentList: [],
+    dateList: [],
+    serviceList: [serviceID],
+    videoList: [],
+    audioList: [],
+    aimaiFlag: 0,
+    notContetFlag: 0,
+    notDateFlag: 0,
+    freeCAFlag: 0
+};
+
+ctrlCmdUtil.sendSearchProgram([searchKey]).then(data => {
+    console.log(util.inspect(data, {depth: null}));
+}).catch(err => {
+    console.log(err.stack);
+});
+*/
+
+/*
+ctrlCmdUtil.sendEnumEpgAutoAdd().then(data => {
+    console.log(util.inspect(data, {depth: null}));
+}).catch(err => {
+    console.log(err.stack);
+});
+*/
+
+/*
+var programID = new Buffer(8).fill(0);
+
+programID.writeUInt16BE(service.ONID, 0);
+programID.writeUInt16BE(service.TSID, 2);
+programID.writeUInt16BE(service.SID, 4);
+programID.writeUInt16BE(29010, 6);
+
+ctrlCmdUtil.sendGetProgramInfo(programID).then(data => {
     console.log(JSON.stringify(data, null, "  "));
 }).catch(err => {
     console.log(err.stack);
 });
+*/
+
+/*
+var serviceID = new Buffer(8).fill(0);
+
+serviceID.writeUInt16BE(service.ONID, 2);
+serviceID.writeUInt16BE(service.TSID, 4);
+serviceID.writeUInt16BE(service.SID, 6);
+
+ctrlCmdUtil.sendEnumProgramInfo(serviceID).then(data => {
+    console.log(JSON.stringify(data, null, "  "));
+}).catch(err => {
+    console.log(err.stack);
+});
+*/
 
 /*ctrlCmdUtil.sendEnumRecInfo().then((data) => {
     console.log(JSON.stringify(data, null, "  "));
